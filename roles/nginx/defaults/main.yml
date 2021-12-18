@@ -1,0 +1,8 @@
+tls_email: joe@jb3.dev
+tls_well_known_location: /var/www/letsencrypt
+
+sites:
+- name: snekbox
+  type: reverse-proxy
+  domain: snekbox.pydis.com
+  upstream: http://localhost:3000

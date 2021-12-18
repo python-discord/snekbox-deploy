@@ -1,0 +1,13 @@
+- name: disable password authentication (SSH)
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^PasswordAuthentication"
+    line: "PasswordAuthentication no"
+    state: present
+  notify: restart ssh
+
+- name: Install SSH keys of administrators
+  template:
+    src: ssh-keys.j2
+    dest: /root/.ssh/authorized_keys
+    mode: '0600'

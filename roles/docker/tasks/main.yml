@@ -1,0 +1,31 @@
+- name: Install Docker apt repo dependencies
+  apt:
+    state: present
+    pkg:
+      - ca-certificates
+      - curl
+      - gnupg
+      - lsb-release
+    update_cache: true
+
+- name: Add Docker signing key
+  shell: set -o pipefail && curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg --yes
+  args:
+    executable: /bin/bash
+
+- name: Add Docker apt repository
+  lineinfile:
+    line: "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian bullseye stable"
+    path: /etc/apt/sources.list.d/docker.list
+
+- name: Install Docker Engine
+  apt:
+    state: present
+    pkg: docker-ce
+    update_cache: true
+
+- name: Start and enable Docker service
+  service:
+    enabled: true
+    name: docker.service
+    state: started
