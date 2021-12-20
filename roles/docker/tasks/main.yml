@@ -24,6 +24,13 @@
     pkg: docker-ce
     update_cache: true
 
+- name: Copy Docker Daemon configuration to host
+  copy:
+    src: daemon.json
+    dest: /etc/docker/daemon.json
+    mode: '0774'
+  notify: restart docker daemon
+
 - name: Start and enable Docker service
   service:
     enabled: true
