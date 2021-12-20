@@ -24,6 +24,8 @@
     privileged: true
     pull: true
     state: started
+    mac_address: "ca:fe:ba:be:be:ef"
+    recreate: true
     published_ports:
       - "127.0.0.1:3000:8060"
     restart_policy: unless-stopped
