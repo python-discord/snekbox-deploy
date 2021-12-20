@@ -5,7 +5,23 @@
 - hosts: all
   roles:
     - nginx
+  tags:
+    - nginx
 
 - hosts: all
   roles:
     - docker
+  tags:
+    - docker
+
+- hosts: all
+  roles:
+    - python
+  tags:
+    - python
+
+- hosts: all
+  roles:
+    - snekbox
+  tags:
+    - snekbox
