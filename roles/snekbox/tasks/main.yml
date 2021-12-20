@@ -8,15 +8,6 @@
   tags:
     - snekbox::modules
 
-- name: Install snekbox additional modules
-  pip:
-    name: "{{ modules }}"
-    extra_args: --user
-  environment:
-    PYTHONUSERBASE: /opt/pythondiscord/snekbox_modules
-  tags:
-    - snekbox::modules
-
 - name: Create the snekbox container
   community.docker.docker_container:
     name: snekbox
@@ -29,4 +20,18 @@
     published_ports:
       - "127.0.0.1:3000:8060"
     restart_policy: unless-stopped
+    mounts:
+      - source: /opt/pythondiscord/snekbox_modules
+        target: /snekbox/user_base
+        type: bind
     hostname: 'snekbox'
+
+- name: Install snekbox additional modules (run in container)
+  community.docker.docker_container_exec:
+    container: snekbox
+    argv:
+      - /bin/sh
+      - -c
+      - PYTHONUSERBASE=/snekbox/user_base pip install --user {{ modules | join(" ") }}
+  tags:
+    - snekbox::modules
