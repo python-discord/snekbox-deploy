@@ -39,6 +39,15 @@
     mode: '0774'
   notify: nginx reload
 
+- name: update nginx basic auth credentials
+  template:
+    src: passwd.j2
+    dest: /etc/nginx/passwd
+    mode: '0770'
+    group: www-data
+    owner: www-data
+  notify: nginx reload
+
 - name: generate list of domains to generate certificates for
   set_fact:
     domains: "{{ sites | map(attribute='domain') | list }}"

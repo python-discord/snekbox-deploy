@@ -6,3 +6,7 @@ sites:
   type: reverse-proxy
   domain: snekbox.pydis.com
   upstream: http://localhost:3000
+  auth: true
+
+# Pulled from a K:V map of user-hash in Ansible Vault
+nginx_basic_auth_creds: "{{ encrypted_nginx_basic_auth_creds }}"

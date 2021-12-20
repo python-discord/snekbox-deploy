@@ -1,0 +1,4 @@
+# Managed by Ansible
+{% for username, password in nginx_basic_auth_creds.items() %}
+{{ username }}:{{ password }}
+{% endfor %}
