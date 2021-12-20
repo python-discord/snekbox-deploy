@@ -1,0 +1,30 @@
+- name: Create Snekbox packages directory
+  file:
+    state: directory
+    path: /opt/pythondiscord/snekbox_modules
+    mode: '0775'
+    owner: root
+    group: root
+  tags:
+    - snekbox::modules
+
+- name: Install snekbox additional modules
+  pip:
+    name: "{{ modules }}"
+    extra_args: --user
+  environment:
+    PYTHONUSERBASE: /opt/pythondiscord/snekbox_modules
+  tags:
+    - snekbox::modules
+
+- name: Create the snekbox container
+  community.docker.docker_container:
+    name: snekbox
+    image: ghcr.io/python-discord/snekbox:latest
+    privileged: true
+    pull: true
+    state: started
+    published_ports:
+      - "127.0.0.1:3000:8060"
+    restart_policy: unless-stopped
+    hostname: 'snekbox'
